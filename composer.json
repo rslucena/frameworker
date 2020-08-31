@@ -1,6 +1,7 @@
 {
     "require": {
-        "workerman/workerman": "3.5.31"
+        "workerman/workerman": "3.5.31",
+        "workerman/mysql": "^1.0"
     },
 	"autoload": {
         "classmap": [

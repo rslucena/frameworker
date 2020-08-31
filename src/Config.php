@@ -18,11 +18,15 @@ class Config
 
         $environment = new Environment();
 
-        $class_vars = get_class_vars(get_class($environment));
+        $vars = get_class_vars(get_class($environment));
 
-        foreach ($class_vars as $name => $value) {
+        foreach ($vars as $keys => $properties) {
 
-            $this->set($name, $value);
+            foreach ($properties as $key => $value) {
+
+                $this->set($keys . '_' . $key, $value);
+
+            }
 
         }
 
@@ -35,7 +39,9 @@ class Config
     private function set($name, $value) : void
     {
 
-        define(strtoupper($name), $value);
+        if (!defined(strtoupper($name))) {
+            define(strtoupper($name), $value);
+        }
 
     }
 

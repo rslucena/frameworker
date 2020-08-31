@@ -33,12 +33,11 @@ class Environment
     );
 
     public $Database = array(
-        'Port' => '',
-        'Host' => '',
-        'User' => '',
+        'Port' => '3306',
+        'Host' => 'localhost',
+        'User' => 'root',
         'Password' => '',
-        'Database' => '',
-        'Prefix' => '',
+        'tableName' => 'workerman'
     );
 
     public $Encryption = array(
