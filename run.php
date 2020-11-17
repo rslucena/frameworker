@@ -36,6 +36,8 @@ $http_worker->onMessage = function ($connection, $request) use ($http_router) {
 
     var_dump($http_router);
 
+
+
     echo "onMessage" . PHP_EOL;
 
 //    var_dump($http_router);
@@ -49,7 +51,7 @@ $http_worker->onMessage = function ($connection, $request) use ($http_router) {
 
 //    print_r($request);
 
-    //$request->get();
+//    $request->get();
     //$request->post();
     //$request->header();
     //$request->cookie();
