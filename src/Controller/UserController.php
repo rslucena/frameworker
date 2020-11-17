@@ -1,16 +1,31 @@
 <?php
 
 
-namespace src\Controller;
+    namespace src\Controller;
 
-use src\Entity\Post;
+    use src\Entity\UserEntity;
+    use src\Provider\RenderProvider;
 
-class UserController
-{
 
-    public function __construct()
+    class UserController extends RenderProvider implements UserEntity
     {
 
-    }
+        public function UserPage()
+        {
 
-}
+            $args = array('name' => 'Rodrigo Lucena');
+
+            RenderProvider::render('home', $args);
+
+        }
+
+        public function UpdatePage( $args = array() )
+        {
+
+            $args = array('name' => 'Rodrigo Lucena');
+
+            RenderProvider::render('home', $args);
+
+        }
+
+    }

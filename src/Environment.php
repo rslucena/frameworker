@@ -33,11 +33,10 @@ class Environment
     );
 
     public $Database = array(
-        'Port' => '3306',
         'Host' => 'localhost',
         'User' => 'root',
         'Password' => '',
-        'tableName' => 'workerman'
+        'tableName' => 'sitebendorf'
     );
 
     public $Encryption = array(
@@ -50,7 +49,8 @@ class Environment
         'Entity' => '',
         'Public' => '',
         'Controller' => '',
-        'Migrations' => ''
+        'Migrations' => '',
+        'Providers' => ''
     );
 
 
@@ -64,10 +64,10 @@ class Environment
      *
      * @throws Exception
      */
-    public function getenv($type, $property)
+    static function getenv($type, $property)
     {
 
-        if ($this->checkenv($property, $type)) {
+        if (self::checkenv($property, $type)) {
 
             return $property[$type];
 
@@ -88,7 +88,7 @@ class Environment
      * @throws Exception
      *
      */
-    private function checkenv($property, $type)
+    static function checkenv($property, $type)
     {
 
         if (array_key_exists($property, $type)) {
@@ -111,10 +111,10 @@ class Environment
      * @throws Exception
      *
      */
-    public function putenv($property, $type, $value)
+    static function putenv($property, $type, $value)
     {
 
-        if ($this->checkenv($property, $type)) {
+        if (self::checkenv($property, $type)) {
 
             $property[$type] = $value;
 
@@ -137,10 +137,10 @@ class Environment
      * @throws Exception
      *
      */
-    public function clrenv($property, $type)
+    static function clrenv($property, $type)
     {
 
-        if ($this->checkenv($property, $type)) {
+        if (self::checkenv($property, $type)) {
 
             unset($property[$type]);
 

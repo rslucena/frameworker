@@ -1,0 +1,35 @@
+Options -Indexes
+
+DirectoryIndex index.php
+
+Options +FollowSymLinks +MultiViews
+
+<IfModule mod_headers.c>
+
+	Header set Connection keep-alive
+
+	ServerSignature Off
+
+	Header unset X-Powered-By
+
+	Header always append X-Frame-Options SAMEORIGIN
+
+	Header set X-Content-Type-Options nosniff
+
+	Header set X-XSS-Protection "1; mode=block"
+
+</IfModule>
+
+<IfModule mod_rewrite.c>
+
+	RewriteEngine On
+
+	RewriteBase /
+
+	RewriteCond %{REQUEST_URI} !public/
+
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+	RewriteRule (.*) src/public/$1 [L]
+
+</IfModule>

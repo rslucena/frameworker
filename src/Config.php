@@ -36,7 +36,7 @@ class Config
      * @param $name
      * @param $value
      */
-    private function set($name, $value) : void
+    private function set($name, $value)
     {
 
         if (!defined(strtoupper($name))) {

@@ -1,68 +1,71 @@
 <?php
-declare(strict_types=1);
+    declare(strict_types=1);
 
-use src\Config\Config;
-use src\Router\Router;
-use Workerman\MySQL\Connection;
-use Workerman\Worker;
+    use src\Config\Config;
+    use src\Router\Router;
+    use src\Database\Database;
 
-require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__.'/vendor/autoload.php';
 
-//INIT
-$http_router = new Router();
-$http_config = new Config();
-$http_worker = new Worker('http://127.0.0.1:80');
+    //INIT
+    $Config = new Config();
+    $Router = new Router();
 
-//WORKERS
-$http_worker->name = "httpServer";
-$http_worker->count = 4;
-
-//START WORKERMAN
-$http_worker->onWorkerStart = function() use ($http_config) {
-
-    echo "onWorkerStart" . PHP_EOL;
-
-};
-
-//OPEN CONNECT
-$http_worker->onConnect = function ($connection) {
-
-    echo "onConnect" . PHP_EOL;
-
-};
-
-//RECEIVED MESSAGE
-$http_worker->onMessage = function ($connection, $request) use ($http_router) {
-
-    var_dump($http_router);
-
-
-
-    echo "onMessage" . PHP_EOL;
-
-//    var_dump($http_router);
-
-//    $router->get('/some/route', function($request) {
-//        // The $request argument of the callback
-//        // will contain information about the request
-//        return "Content";
-//    });
-
-
-//    print_r($request);
-
-//    $request->get();
+    //$request->get();
     //$request->post();
     //$request->header();
     //$request->cookie();
     //$requset->session();
-    //$request->uri();
     //$request->path();
-    //$request->method();
 
-    // Send data to client
-    $connection->send("Hello World");
-};
+    try {
+
+        // HOME
+        $Router->map('GET', '/', 'HomeController#HomePage', 'home');
+
+        // USER
+        $Router->addRoutes(array(
+            array('GET', '/user?/?', 'UserController#UserPage', 'UserPage'),
+            array('GET', '/user/[i:id]?/?', 'UserController#UpdatePage', 'UserDetails'),
+            array('POST', '/user?/?', 'UserController#UpdatePage', 'UserUpdate')
+        ));
+
+        $match = $Router->run();
+
+        if (is_array($match)) {
+
+            $ControllerTarget = "src\Controller\\{$match['class']}";
+
+            if (!class_exists($ControllerTarget)) {
+                header($_SERVER["SERVER_PROTOCOL"].' 404 Not Found');
+                die();
+            }
+
+            $Controller = new $ControllerTarget;
+
+            call_user_func_array(array($Controller, $match['func']), array(&$match));
+
+            die();
+
+        } else {
+
+            header($_SERVER["SERVER_PROTOCOL"].' 404 Not Found');
+            die();
+
+        }
 
 
-Worker::runAll();
+    } catch (Exception $exception) {
+
+        var_dump($exception->getMessage());
+
+    }
+
+
+    //    $Router->on($Router->method(), $Router->uri(), function ( $module, $class, $method ){
+    //        var_dump($module);
+    //        var_dump($class);
+    //        var_dump($method);
+    //    });
+
+    //    echo $Router->run($Router->method(), $Router->uri());
